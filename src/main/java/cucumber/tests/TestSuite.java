@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
         glue = {"cucumber.steps", "cucumber.hooks"},
         tags = {"@Smoke"}
 )
-public class BaseTest {
+public class TestSuite {
 
 
 
