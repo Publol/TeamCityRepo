@@ -1,14 +1,25 @@
 package cucumber.steps;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.PendingException;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.hooks.BaseHooks;
 import enums.Environment;
 import io.restassured.RestAssured;
-import io.restassured.mapper.ObjectMapper;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.path.json.config.JsonParserType;
+import io.restassured.path.json.config.JsonPathConfig;
 import io.restassured.response.ResponseBody;
+import junit.AssertWrapper;
+import rest.AuthEntity;
 import rest.LoginEntity;
+import rest.RestApiUtils;
+
+import java.io.IOException;
 
 public class StepsApi extends AbstractStep {
 
@@ -16,28 +27,29 @@ public class StepsApi extends AbstractStep {
         super(browser);
     }
 
-    @Then("^API should return added product$")
-    public void api_should_return_added_product() throws Throwable {
+    @And("^API should return added product$")
+    public void apiShouldReturnAddedProduct() {
+        JsonPath cardResult = getCardResult();
 
+        AssertWrapper.assertTrueThrowIfFailed("Rest API should return not empty product.", (Integer)cardResult.get("Count") == 1);
     }
 
-    @Given("^Test Api$")
-    public void testApi() {
+    @And("^API should return empty list of products$")
+    public void apiShouldReturnEmptyListOfProducts() {
+        JsonPath cardResult = getCardResult();
 
-        String jsonBody = "{username: \"Roman\", password: \"Um9tYW4uT3Npbm92LlBhc3N3b3Jk\" }";
+        AssertWrapper.assertTrueThrowIfFailed("Rest API should return not empty product.", (Integer)cardResult.get("Count") == 0);
+    }
 
-        LoginEntity entity = new LoginEntity(jsonBody);
+    private JsonPath getCardResult(){
+        String username = Environment.INSTANCE.getProperty("global.username");
+        String password = Environment.INSTANCE.getProperty("global.api.secure_password");
 
-        String auth_token = RestAssured.
-                given()
-                .header("Content-Type", "application/json")
-                .body(jsonBody)
-                .when()
-                .post(Environment.INSTANCE.getProperty("global.api.login_endpoint"))
-                .thenReturn().jsonPath().getString("Auth_token");
+        LoginEntity loginEntity = RestApiUtils.getLoginEntityKeyBy(username, password);
+        String jsonEntity = RestApiUtils.getJsonBy(loginEntity);
+        String authToken = RestApiUtils.getAuthToken(jsonEntity);
 
-
-        body.print();
+        return RestApiUtils.getJsonCardResult(authToken);
 
 
     }

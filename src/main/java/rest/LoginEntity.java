@@ -1,9 +1,22 @@
 package rest;
 
-public class LoginEntity extends AbstractEntity {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    public LoginEntity(String body) {
-        super(body);
+public class LoginEntity implements AbstractEntity  {
+
+    @JsonProperty("username")
+    private String login;
+
+    @JsonProperty
+    private String password;
+
+    public LoginEntity(){
+
+    }
+
+    public LoginEntity(String login, String password) {
+        this.login = login;
+        this.password = password;
     }
 
 
