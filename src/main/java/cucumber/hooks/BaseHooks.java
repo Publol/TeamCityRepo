@@ -26,12 +26,12 @@ public class BaseHooks extends SelBrowser {
         }catch (NullPointerException | IllegalArgumentException ex) {
             selBrowser = Browser.CHROME;
         }
-        driver = EnhancementWebDriver.initWebDiver(selBrowser);
+      //  driver = EnhancementWebDriver.initWebDiver(selBrowser);
         return driver;
     }
 
     @After
     public void closeBrowser(){
-        driver.getWebDriver().quit();
+//        driver.getWebDriver().quit();
     }
 }
