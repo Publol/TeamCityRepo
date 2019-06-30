@@ -5,12 +5,9 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.hooks.BaseHooks;
 import junit.AssertWrapper;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
 import pages.*;
 import pages.enums.EMainTopBar;
 
-import java.io.File;
 import java.util.Objects;
 
 public class StepsUT extends AbstractStep{
@@ -27,25 +24,10 @@ public class StepsUT extends AbstractStep{
 
     @Given("^User should select product by \\((\\d+)\\) index and click on it$")
     public void user_should_select_product_by_index_and_click_on_it(int index) throws Throwable {
-        ChromeDriverService driverService = new ChromeDriverService.Builder()
-                .usingDriverExecutable(new File("src/main/resources/drivers/chromedriver.exe"))
-                .usingAnyFreePort()
-                .build();
-
-        ChromeDriver chromeDriver = new ChromeDriver(driverService);
-        chromeDriver.get("https://www.google.com");
-        chromeDriver.quit();
-//        MainPage mainPage = new MainPage(eDriver);
-//        SingleProductPage singleProductPage = mainPage.getProductTable().clickOnProductByIndex(index);
-//        assert singleProductPage.isMainContentPresented();
+        MainPage mainPage = new MainPage(eDriver);
+        SingleProductPage singleProductPage = mainPage.getProductTable().clickOnProductByIndex(index);
+        assert singleProductPage.isMainContentPresented();
     }
-
-//    @Given("^User should select product by \\((\\d+)\\) index and click on it$")
-//    public void user_should_select_product_by_index_and_click_on_it(int index) throws Throwable {
-//        MainPage mainPage = new MainPage(eDriver);
-//        SingleProductPage singleProductPage = mainPage.getProductTable().clickOnProductByIndex(index);
-//        assert singleProductPage.isMainContentPresented();
-//    }
 
     @When("^User click on 'Add to cart' button$")
     public void userClickOnAddToCartButton() {

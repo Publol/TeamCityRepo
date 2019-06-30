@@ -10,8 +10,8 @@ public abstract class AbstractStep {
 
     protected AbstractStep(BaseHooks browser){
         this.hooks = browser;
-//        this.eDriver = this.hooks.setUp();
-//        this.hooks.maximizeWindow();
+        this.eDriver = this.hooks.setUp();
+        this.hooks.maximizeWindow();
     }
 
     protected void closeBrowser(){
