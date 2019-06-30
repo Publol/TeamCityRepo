@@ -33,6 +33,7 @@ public class StepsUT extends AbstractStep{
                 .build();
 
         ChromeDriver chromeDriver = new ChromeDriver(driverService);
+        chromeDriver.get("https://www.google.com");
         chromeDriver.quit();
 //        MainPage mainPage = new MainPage(eDriver);
 //        SingleProductPage singleProductPage = mainPage.getProductTable().clickOnProductByIndex(index);
